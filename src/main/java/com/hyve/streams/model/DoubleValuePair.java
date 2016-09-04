@@ -1,6 +1,5 @@
 package com.hyve.streams.model;
 
-import com.hyve.streams.decoder.HyveDecoder;
 
 /**
  * Handled Double valued pairs

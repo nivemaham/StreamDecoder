@@ -1,6 +1,5 @@
 package com.hyve.streams.model;
 
-import com.hyve.streams.decoder.HyveDecoder;
 
 /**
  * Handles single valued pair

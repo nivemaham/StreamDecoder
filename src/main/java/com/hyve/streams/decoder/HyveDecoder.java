@@ -15,7 +15,7 @@ import com.hyve.streams.model.SingleValuePair;
  */
 public class HyveDecoder {
 
-	// a global encoded string
+	// a common encoded string
 	private StringBuffer resultString;
 
 	/**
@@ -32,7 +32,8 @@ public class HyveDecoder {
 		return resultString.toString();
 	}
 
-	public List<Pair> getPairs(char[] input) throws InvalidInputPairException {
+	private List<Pair> getPairs(char[] input) throws InvalidInputPairException {
+		//the input should be in pairs
 		if(input.length%2 !=0)
 		{
 			throw new InvalidInputPairException("The encoded string length should be even");
@@ -40,7 +41,15 @@ public class HyveDecoder {
 		List<Pair> charPairs = new ArrayList<Pair>();
 
 		for (int i = 0; i < input.length; i = i + 2) {
+			
 			char first = input[i];
+			char empty = '\u0000';
+			if(Character.valueOf(first).equals(Character.valueOf(empty)))
+			{
+				break;
+			}
+			
+			
 			// throw exception if the first char of a pair is not numeric
 			if (!Character.isDigit(first)) {
 				throw new InvalidInputPairException(
@@ -48,6 +57,11 @@ public class HyveDecoder {
 			}
 			// create singlevaluepair if the first chat is 0
 			if (Character.getNumericValue(first) == 0) {
+				char second = input[i+1];
+				if(Character.valueOf(second).equals(Character.valueOf(empty)))
+				{
+					throw new InvalidInputPairException("The tail character or single pair should not be empty");
+				}
 				SingleValuePair single = new SingleValuePair(first,
 						input[i + 1]);
 				charPairs.add(single);

@@ -1,7 +1,9 @@
 package com.hyve.streams.encoder;
 
 /**
- * Created by narmi on 9/3/2016.
+ * Factory class to create HyveEncoders based on request
+ * 
+ * Created by nive on 9/3/2016.
  */
 public class HyveEncoderFactory {
 
@@ -12,6 +14,10 @@ public class HyveEncoderFactory {
     {
     }
 
+    /**
+     * Returns the singleton object of factory
+     * @return
+     */
     public static HyveEncoderFactory getInstance()
     {
         if(instance==null)
@@ -21,6 +27,11 @@ public class HyveEncoderFactory {
         return instance;
     }
 
+    /**
+     * Creates {@link TrivialEncoder} if requested with 1, otherwise {@link WindowEncoder}
+     * @param encoderEnvReq
+     * @return
+     */
     public HyveEncoder getEncoder(int encoderEnvReq)
     {
         if(encoderEnvReq ==1)

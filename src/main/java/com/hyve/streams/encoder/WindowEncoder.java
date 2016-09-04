@@ -12,9 +12,9 @@ public class WindowEncoder implements HyveEncoder {
 
 	private int windowSize;
 
-	private StringBuffer encodedValue;
+	private StringBuffer encodedValue;// encodedpairvalues
 
-	private StringBuffer encodedPart;
+	private StringBuffer encodedPart; //encodedpart
 
 	public WindowEncoder() {
 		this.windowSize = 3; // default size 3
@@ -29,16 +29,20 @@ public class WindowEncoder implements HyveEncoder {
 
 		encodedPart = new StringBuffer("");
 
+		// initiate encoding with first char
 		encodedValue.append('0');
 		encodedValue.append(decodedValue.charAt(0));
 
 		encodedPart.append(decodedValue.charAt(0));
+		
+		//fill window using naive encoding
 		int i = 1;
 		while (encodedPart.length() < this.windowSize) {
 			naiveEncode(decodedValue, i);
 			i++;
 		}
 
+		// look for matching windows, if not move window by a char
 		while (i < decodedValue.length()) {
 			if (decodedValue.startsWith(
 					encodedPart.toString().substring(
@@ -46,7 +50,7 @@ public class WindowEncoder implements HyveEncoder {
 				encodedValue.append(windowSize);
 				encodedValue.append(windowSize);
 				i = i + windowSize;
-			} else {
+			} else { //if not move window by a char with naive encoding
 				naiveEncode(decodedValue, i);
 				i++;
 			}
@@ -54,6 +58,12 @@ public class WindowEncoder implements HyveEncoder {
 		return encodedValue.toString();
 	}
 
+	
+	/**
+	 * A naive encoding statergy, that uses only singlevaluepairs and 11
+	 * @param decodedValue
+	 * @param i
+	 */
 	private void naiveEncode(String decodedValue, int i) {
 		char currentChar = decodedValue.charAt(i);
 		if (encodedPart.charAt(encodedPart.length() - 1) == currentChar) {

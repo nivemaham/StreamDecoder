@@ -5,7 +5,7 @@ package com.hyve.streams.encoder;
  */
 public class TrivialEncoder implements HyveEncoder {
 
-    @Override
+    
     public String encode(String decodedValue) {
         StringBuffer encodedValue = new StringBuffer("");
         for(char eachChar : decodedValue.toCharArray())

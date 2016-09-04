@@ -28,7 +28,7 @@ public class HyveEncoderFactory {
             return new TrivialEncoder();
         }
         else {
-            return new InferEncoder();
+            return new WindowEncoder();
         }
     }
 }

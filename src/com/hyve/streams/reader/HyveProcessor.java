@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.hyve.streams.decoder.HyveDecoder;
+import com.hyve.streams.encoder.HyveEncoderFactory;
 import com.hyve.streams.exception.InvalidInputPairException;
 import com.hyve.streams.model.DoubleValuePair;
 import com.hyve.streams.model.Pair;
@@ -21,8 +22,7 @@ import com.hyve.streams.model.SingleValuePair;
  */
 public class HyveProcessor {
 
-	private Integer myEnv = Integer.getInteger(System
-			.getenv("USE_TRIVIAL_IMPLEMENTATION"));
+	private Integer decoderEnv = 1; // default is set to trivial implementation
 	private HyveDecoder decorder = new HyveDecoder();
 
 	/**
@@ -44,8 +44,8 @@ public class HyveProcessor {
 			buffer.rewind();
 			char[] input = buffer.array();
 			// decode every 64 chars
-			List<Pair> pairs = getPairs(input);
-			String decodedString = decorder.decode(pairs);
+
+			String decodedString = decorder.decode(input);
 			System.out.println(decodedString);
 			buffer.clear();
 		}
@@ -63,46 +63,26 @@ public class HyveProcessor {
 
 		String str2 = "0a110b3233";
 		byte[] content = str2.getBytes();
+//		decoderEnv = Integer.getInteger(System
+//				.getenv("USE_TRIVIAL_IMPLEMENTATION"));
+		decoderEnv = 2;
 
 		Reader reader = new InputStreamReader(new ByteArrayInputStream(content));
 
 		CharBuffer buffer = CharBuffer.allocate(10);
 		int test = reader.read(buffer);
 		char[] arr = buffer.array();
-		List<Pair> pairs = getPairs(arr);
-		String testStr = decorder.decode(pairs);
+
+		String testStr = decorder.decode(arr);
+
 
 		System.out.println(testStr);
-
+		String encoded = HyveEncoderFactory.getInstance().getEncoder(decoderEnv).encode(testStr);
+		System.out.println(encoded);
+		String decoded = decorder.decode(encoded.toCharArray());
+		System.out.println(decoded);
 	}
 
-	public List<Pair> getPairs(char[] input) throws InvalidInputPairException {
-		List<Pair> charPairs = new ArrayList<Pair>();
 
-		for (int i = 0; i < input.length; i = i + 2) {
-			char first = input[i];
-			// throw exception if the first char of a pair is not numeric
-			if (!Character.isDigit(first)) {
-				throw new InvalidInputPairException(
-						"The head charactor of pair should be a digit");
-			}
-			// create singlevaluepair if the first chat is 0
-			if (Character.getNumericValue(first) == 0) {
-				SingleValuePair single = new SingleValuePair(first,
-						input[i + 1]);
-				charPairs.add(single);
-			}
-			// create doublevaluepair is the first char is greater than 0
-			else if (Character.getNumericValue(first) > 0) {
-				char second = input[i + 1];
-				if (!Character.isDigit(second))
-					throw new InvalidInputPairException(
-							"The tail charactor of a double pair should be a numberic value");
-				DoubleValuePair doublePair = new DoubleValuePair(first, second);
-				charPairs.add(doublePair);
-			}
-		}
-		return charPairs;
-	}
 
 }

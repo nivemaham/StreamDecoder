@@ -19,13 +19,13 @@ public class SingleValuePair extends Pair {
 	 * @see com.hyve.streams.model.Pair#getDecodedString()
 	 */
 	@Override
-	public void getDecodedString() {
+	public StringBuffer getDecodedString(StringBuffer currentDecoded) {
 		int offset = Character.getNumericValue(this.p) ; 
 		if (offset== 0) {
 			String toAppend =Character.toString(this.q);
-			
-			HyveDecoder.ResultString.append(toAppend);
+			currentDecoded.append(toAppend);
 		}
+		return currentDecoded;
 	}
 
 }

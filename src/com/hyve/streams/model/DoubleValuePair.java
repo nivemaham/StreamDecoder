@@ -19,14 +19,14 @@ public class DoubleValuePair extends Pair {
 	 * @see com.hyve.streams.model.Pair#getDecodedString()
 	 */
 	@Override
-	public void getDecodedString() {
+	public StringBuffer getDecodedString(StringBuffer currentDecoded) {
 		int offset = Character.getNumericValue(this.p) ; 
 		if (offset> 0) {
-			int start = HyveDecoder.ResultString.length()-Character.getNumericValue(this.p);
-			String toAppend =HyveDecoder.ResultString.substring(start).substring(0, Character.getNumericValue(this.q));
-			HyveDecoder.ResultString.append(toAppend);
+			int start = currentDecoded.length()-Character.getNumericValue(this.p);
+			String toAppend =currentDecoded.substring(start).substring(0, Character.getNumericValue(this.q));
+			return currentDecoded.append(toAppend);
 		}
-		
+		return currentDecoded;
 	}
 
 }

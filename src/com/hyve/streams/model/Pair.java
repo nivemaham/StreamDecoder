@@ -18,6 +18,6 @@ public abstract class Pair {
 	/**
 	 * Abstract method to implement specific decoding mechanism
 	 */
-	public abstract void getDecodedString();
+	public abstract StringBuffer getDecodedString(StringBuffer decoded);
 
 }
